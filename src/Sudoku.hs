@@ -7,10 +7,6 @@ import Debug.Trace
 import Control.Monad
 import System.IO
 
---import Data.Array.Repa
---type Puzzle = Array U DIM2 Int
---let x :: Puzzle; x = fromListUnboxed (Z :. (9 :: Int) :. (9 :: Int)) ([1..81] :: [Int])
-
 -- Board
 -- (0,0)...........(0,8)
 -- .                 .
@@ -28,11 +24,12 @@ getTopLeftNum :: Board -> Int
 getTopLeftNum b = 100*(b ! (0,0)) + 10*(b ! (0,1)) + (b ! (0,2))
 
 solver :: Board -> [Board]
-solver b = if validBoard b then [b]
-           else foldr (\x xs -> if validBoard x
-                                  then (x:xs)
-                                  else xs
-                      ) [] (concat $ map solver $ possibleBoards (nextEmpty b) b)
+solver b = if validBoard b
+             then [b]
+             else foldr (\x xs -> if validBoard x
+                                    then (x:xs)
+                                    else xs
+                        ) [] (concat $ map solver $ possibleBoards (nextEmpty b) b)
 
 allCoords :: [Coord]
 allCoords = [(i,j) | i <- [0..8], j <- [0..8]]
@@ -129,7 +126,7 @@ boardToGrid b = insertNewlines $ boardToString b
 printCell :: Int -> String
 printCell x
   | 1 <= x && x <= 9 = show x
-  | x == 0 = "."
+  | x == 0 = "0"
   | otherwise = error $ "Unexpected board cell value: " ++ show x
 
 --
