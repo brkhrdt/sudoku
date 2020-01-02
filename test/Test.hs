@@ -6,11 +6,15 @@ import Test.Hspec
 import Test.QuickCheck
 import Data.Maybe
 import Control.Monad
+import Control.Monad.Fail as Fail
 import Debug.Trace
 import Data.Array
 
 -- Opening tests in repl:
 -- > cabal new-repl test:tests
+
+instance Fail.MonadFail Gen where
+  fail = error "Pattern match failed."
 
 --
 -- QUICKCHECK
